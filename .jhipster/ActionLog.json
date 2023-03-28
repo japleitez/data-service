@@ -1,0 +1,36 @@
+{
+  "name": "ActionLog",
+  "fields": [
+    {
+      "fieldName": "title",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "logText",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "action",
+      "otherEntityRelationshipName": "actionLog",
+      "relationshipName": "action"
+    }
+  ],
+  "entityTableName": "action_log",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210816123646"
+}

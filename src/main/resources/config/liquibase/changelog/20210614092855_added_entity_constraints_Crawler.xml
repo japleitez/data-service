@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity Crawler.
+    -->
+    <changeSet id="20210614092855-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="crawler_id"
+                                 baseTableName="rel_crawler__source"
+                                 constraintName="fk_rel_crawler__source__crawler_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="crawler"/>
+
+        <addForeignKeyConstraint baseColumnNames="source_id"
+                                 baseTableName="rel_crawler__source"
+                                 constraintName="fk_rel_crawler__source__source_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="source"/>
+    </changeSet>
+</databaseChangeLog>

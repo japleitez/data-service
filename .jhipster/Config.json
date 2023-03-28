@@ -1,0 +1,38 @@
+{
+  "name": "Config",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "file",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "acquisition",
+      "otherEntityRelationshipName": "config",
+      "relationshipName": "acquisition"
+    }
+  ],
+  "entityTableName": "config",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210722142549"
+}

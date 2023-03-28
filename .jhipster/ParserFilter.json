@@ -1,0 +1,45 @@
+{
+  "name": "ParserFilter",
+  "fields": [
+    {
+      "fieldName": "className",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "pattern"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesPattern": "([a-zA-Z_$][a-zA-Z\\\\d_$]*\\\\.)*[a-zA-Z_$][a-zA-Z\\\\d_$]*"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength", "pattern"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesMaxlength": "255",
+      "fieldValidateRulesPattern": "[a-zA-Z_$][a-zA-Z\\\\d_$]*"
+    },
+    {
+      "fieldName": "params",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "crawler",
+      "otherEntityRelationshipName": "parserFilter",
+      "relationshipName": "crawler"
+    }
+  ],
+  "entityTableName": "parser_filter",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210616133751"
+}

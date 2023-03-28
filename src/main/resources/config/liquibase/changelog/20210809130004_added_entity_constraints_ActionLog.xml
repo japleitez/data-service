@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity ActionLogs.
+    -->
+    <changeSet id="20210809130004-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="action_id"
+                                 baseTableName="action_log"
+                                 constraintName="fk_action_log__action_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="action"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,11 @@
+{
+  "com.digitalpebble.stormcrawler.filtering.UrlFilters": [
+    {
+      "class": "com.digitalpebble.stormcrawler.filtering.regex.FastURLFilter",
+      "name": "FastURLFilter",
+      "params": {
+        "file": "fast.urlfilter.json"
+      }
+    }
+  ]
+}

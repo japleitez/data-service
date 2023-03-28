@@ -1,0 +1,16 @@
+{
+	"sources": [
+		{
+			"name": "asd#%b",
+			"url": "http://source1"
+		},
+		{
+			"name": "source2",
+			"url": "http://source2"
+		},
+		{
+			"name": "source3",
+			"url": "__source3"
+		}
+	]
+}

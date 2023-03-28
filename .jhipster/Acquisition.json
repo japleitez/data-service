@@ -1,0 +1,69 @@
+{
+  "name": "Acquisition",
+  "fields": [
+    {
+      "fieldName": "workflowId",
+      "fieldType": "UUID",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastUpdateDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "AcquisitionStatusEnum",
+      "fieldValues": "PROVISIONING,QUEUED,RUNNING,PAUSED,SUCCESS,ERROR,STOPPED",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "stormId",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "config",
+      "otherEntityRelationshipName": "acquisition",
+      "relationshipName": "config"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "action",
+      "otherEntityRelationshipName": "acquisition",
+      "relationshipName": "action"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "report",
+      "otherEntityRelationshipName": "acquisition",
+      "relationshipName": "report"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "crawler",
+      "otherEntityRelationshipName": "acquisition",
+      "relationshipName": "crawler"
+    }
+  ],
+  "entityTableName": "acquisition",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210629074550"
+}

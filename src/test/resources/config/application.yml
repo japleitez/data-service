@@ -1,0 +1,182 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration is used for unit/integration tests.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+eureka:
+  client:
+    enabled: false
+  instance:
+    appname: dataAcquisitionService
+    instanceId: dataAcquisitionService:${spring.application.instance-id:${random.value}}
+
+spring:
+  application:
+    name: dataAcquisitionService
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:dataacquisitionservice;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=create domain if not exists jsonb as other;
+    name:
+    username:
+    password:
+    hikari:
+      auto-commit: false
+  jackson:
+    serialization:
+      write-durations-as-timestamps: false
+  jpa:
+    database-platform: tech.jhipster.domain.util.FixedH2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.hbm2ddl.auto: validate
+      hibernate.jdbc.time_zone: UTC
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.enable_lazy_load_no_trans: true
+  liquibase:
+    contexts: test
+  mail:
+    host: localhost
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  messages:
+    basename: i18n/messages
+  task:
+    execution:
+      thread-name-prefix: data-acquisition-service-task-
+      pool:
+        core-size: 1
+        max-size: 50
+        queue-capacity: 10000
+    scheduling:
+      thread-name-prefix: data-acquisition-service-scheduling-
+      pool:
+        size: 1
+  thymeleaf:
+    mode: HTML
+  # Allow SecurityConfiguration to initialize w/o specifying an empty issuer-uri is OK
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: http://DO_NOT_CALL:9080/auth/realms/jhipster
+  elasticsearch:
+    uris: 'http://localhost:9200'
+
+server:
+  port: 10344
+  address: localhost
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+jhipster:
+  clientApp:
+    name: 'dataAcquisitionServiceApp'
+  logging:
+    # To test json console appender
+    use-json-format: false
+    logstash:
+      enabled: false
+      host: localhost
+      port: 5000
+      queue-size: 512
+  mail:
+    from: test@localhost
+    base-url: http://127.0.0.1:8080
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+application:
+  nimbus-seeds:
+    - nimbus.seed1
+    - nimbus.seed2
+  topology-path: /basic-topology.jar
+  kill-topology-wait-time: 60
+  selenium-address: http://host.docker.internal:4444
+  topology-report-address: host.docker.internal:8081/acquisitions/:id/report
+  oauth2-groups:
+    - WIHP
+    - GRP2
+  oauth2-scopes:
+    - scope1
+    - scope2
+  url-filter-classes:
+    - com.digitalpebble.stormcrawler.filtering.basic.BasicURLFister
+    - com.digitalpebble.stormcrawler.filtering.depth.MaxDepthFilter
+    - com.digitalpebble.stormcrawler.filtering.basic.BasicURLNormalizer
+    - com.digitalpebble.stormcrawler.filtering.host.HostURLFilter
+    - com.digitalpebble.stormcrawler.filtering.regex.RegexURLNormalizer
+    - com.digitalpebble.stormcrawler.filtering.regex.RegexURLFilter
+    - com.digitalpebble.stormcrawler.filtering.basic.SelfURLFilter
+    - com.digitalpebble.stormcrawler.filtering.sitemap.SitemapFilter
+    - eu.europa.ec.eurostat.wihp.filters.url.EsFastUrlFilter
+    - eu.europa.ec.eurostat.wihp.filters.url.WIHPFilters
+  parse-filter-classes:
+    - eu.europa.ec.eurostat.wihp.filters.parse.EsCollectionTagger
+    - com.digitalpebble.stormcrawler.parse.filter.XPathFilter
+    - com.digitalpebble.stormcrawler.parse.filter.LinkParseFilter
+    - com.digitalpebble.stormcrawler.parse.filter.DomainParseFilter
+    - com.digitalpebble.stormcrawler.parse.filter.MimeTypeNormalization
+    - com.digitalpebble.stormcrawler.parse.filter.CommaSeparatedToMultivaluedMetadata
+    - com.digitalpebble.stormcrawler.parse.filter.LDJsonParseFilter
+    - com.digitalpebble.stormcrawler.parse.filter.MD5SignatureParseFilter
+    - eu.europa.ec.eurostat.wihp.filters.parse.WIHPParseFilters
+  flux-path: ".\\acquisition_"
+  flux-ext: '.flux'
+  parse-filter-index-id: 'es-parsefilters.json'
+  url-filter-index-id: 'es-urlfilters.json'
+  wihp-url-filter-class: eu.europa.ec.eurostat.wihp.filters.url.WIHPFilters
+  wihp-url-filter-index-id: 'WihpUrlFilter.json'
+  wihp-url-filter-json-template: './elastic/WihpUrlFilter.json'
+  wihp-parse-filter-json-template: './elastic/WihpParseFilter.json'
+  wihp-parse-filter-class: eu.europa.ec.eurostat.wihp.filters.parse.WIHPParseFilters
+  wihp-parse-filter-index-id: 'WihpParseFilter.json'
+  storm-metrics-template: 'storm-metrics-template'
+  config-file: './elastic/config.json'
+  content-file: './elastic/content.json'
+  metrics-file: './elastic/metrics.json'
+  status-file: './elastic/status.json'
+  config-index-suffix: 'config'
+  content-index-suffix: 'content'
+  metrics-index-suffix: 'metrics'
+  status-index-suffix: 'status'
+  max-sources-bulk-size: 999
+  max-elk-sources-bulk-size: 20
+  elk-sources-bulk-size-factor: 10
+  playground-service-address: http://localhost:8082/

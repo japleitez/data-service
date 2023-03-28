@@ -1,0 +1,101 @@
+entity Source {
+  name String required minlength(1) maxlength(100) pattern(/^[A-Z][a-z][0-9][ _.]+$/) unique
+  url String required minlength(1)
+}
+
+entity Crawler {
+  name String required minlength(1) maxlength(100) pattern(/^[A-Z][a-z][0-9][ _.]+$/) unique
+  fetchInterval Integer required min(-1) max(525600)
+  fetchIntervalWhenError Integer required min(-1) max(525600)
+  fetchIntervalWhenFetchError Integer required min(-1)  max(525600)
+  extractorNoText Boolean required
+  extractorTextIncludePattern String
+  extractorTextExcludeTags String
+  httpContentLimit Integer required min(-1) max(2147483647)
+  emitOutLinks Boolean required
+  maxEmitOutLinksPerPage Integer required min(-1) max(2147483647)
+}
+
+entity ParserFilter {
+  className String required minlength(1) pattern(/([a-zA-Z_$][a-zA-Z\\d_$]*\\.)*[a-zA-Z_$][a-zA-Z\\d_$]*/)
+  name String required minlength(1) maxlength(255) pattern(/[a-zA-Z_$][a-zA-Z\\d_$]*/)
+  params String
+}
+
+relationship ManyToMany {
+  Crawler {source required} to Source {crawler}
+}
+
+relationship OneToMany {
+  Crawler {parserFilter} to ParserFilter {crawler}
+}
+
+use pagination for Source
+use pagination for Crawler
+
+entity Acquisition {
+	workflowId UUID required
+    startDate Instant required
+    lastUpdateDate Instant required
+    status AcquisitionStatusEnum required
+    stormId String
+}
+
+relationship OneToMany {
+   Crawler to Acquisition {crawler}
+}
+
+enum AcquisitionStatusEnum {
+	PROVISIONING,
+    QUEUED,
+    RUNNING,
+    PAUSED,
+    SUCCESS,
+    ERROR,
+    STOPPED
+}
+
+paginate Acquisition with pagination
+service Acquisition with serviceImpl
+
+entity Config {
+  name String required minlength(1) maxlength(100)
+  file String required
+}
+
+entity Report {
+  content String required
+}
+
+relationship OneToMany {
+  Acquisition {config} to Config {acquisition}
+  Acquisition to Action {acquisition}
+  Acquisition to Report {acquisition}
+}
+
+dto Config with mapstruct
+paginate Config with pagination
+service Config with serviceImpl
+
+enum AcquisitionAction {
+	START,
+    PAUSE,
+    STOP
+}
+
+entity Action {
+    date Instant required
+    success Boolean required
+    action AcquisitionAction required
+}
+
+entity ActionLog {
+    title String required
+    logText String required
+}
+
+relationship OneToMany {
+   Action to ActionLog {action}
+}
+
+dto Action, ActionLog, Report with mapstruct

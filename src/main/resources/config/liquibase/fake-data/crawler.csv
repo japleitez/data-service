@@ -1,0 +1,121 @@
+id;name;fetch_interval;fetch_interval_when_error;fetch_interval_when_fetch_error;extractor_no_text;extractor_text_include_pattern;extractor_text_exclude_tags;http_content_limit;emit_out_links;max_emit_out_links_per_page;dynamic
+1;crawler1;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+2;crawler2;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+3;crawler3;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+4;crawler4;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+5;crawler5;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+6;crawler6;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+7;crawler7;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+8;crawler8;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+9;crawler9;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+10;crawler10;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+11;crawler11;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+12;crawler12;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+13;crawler13;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+14;crawler14;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+15;crawler15;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+16;crawler16;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+17;crawler17;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+18;crawler18;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+19;crawler19;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+20;crawler20;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+21;crawler21;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+22;crawler22;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+23;crawler23;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+24;crawler24;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+25;crawler25;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+26;crawler26;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+27;crawler27;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+28;crawler28;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+29;crawler29;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false
+30;crawler30;1440;44640;120;false;"- DIV[id=""maincontent""]
+- DIV[itemprop=""articleBody""]
+- ARTICLE";"- STYLE
+- SCRIPT";15000000;true;-1;false

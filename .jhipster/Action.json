@@ -1,0 +1,48 @@
+{
+  "name": "Action",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "success",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "action",
+      "fieldType": "AcquisitionAction",
+      "fieldValues": "START,PAUSE,STOP",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "actionLog",
+      "otherEntityRelationshipName": "action",
+      "relationshipName": "actionLog"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "acquisition",
+      "otherEntityRelationshipName": "action",
+      "relationshipName": "acquisition"
+    }
+  ],
+  "entityTableName": "action",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210816123645"
+}

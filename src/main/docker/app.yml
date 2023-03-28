@@ -1,0 +1,77 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+version: '3.8'
+services:
+  dataacquisitionservice-app:
+    image: dataacquisitionservice
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      #    - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      #    - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
+      #    - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dataacquisitionservice-postgresql:5432/dataAcquisitionService
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://dataacquisitionservice-postgresql:5432/dataAcquisitionService
+      #    - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
+      #    - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=internal
+      #    - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=internal
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_ELASTICSEARCH_URIS_0=http://host.docker.internal:9200
+      - SPRING_LIQUIBASE_CONTEXTS=prod,faker
+      - APPLICATION_NIMBUS_SEEDS_0=host.docker.internal
+      - APPLICATION_TOPOLOGY_PATH=/basic-topology.jar
+      - APPLICATION_SELENIUM_ADDRESS=http://host.docker.internal:4444
+      - APPLICATION_TOPOLOGY_REPORT_ADDRESS=http://host.docker.internal:8081/api/acquisitions/:id/report
+      - APPLICATION_PLAYGROUND_SERVICE_ADDRESS=http://host.docker.internal:8082/
+      - JHIPSTER_CORS_ALLOWED_ORIGINS=*
+      - JHIPSTER_CORS_ALLOWED_METHODS=*
+      - JHIPSTER_CORS_ALLOWED_HEADERS=*
+      - JHIPSTER_CORS_EXPOSED_HEADERS=Authorization,Link,X-Total-Count
+    ports:
+      - 8081:8081
+  dataacquisitionservice-postgresql:
+    image: postgres:12.10
+    # volumes:
+    #   - ~/volumes/jhipster/dataAcquisitionService/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=dataAcquisitionService
+      - POSTGRES_PASSWORD=
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:5432:5432
+  #jhipster-registry:
+  #  image: jhipster/jhipster-registry:v7.3.0
+  #  volumes:
+  #    - ./central-server-config:/central-config
+  #  # When run with the "dev" Spring profile, the JHipster Registry will
+  #  # read the config from the local filesystem (central-server-config directory)
+  #  # When run with the "prod" Spring profile, it will read the configuration from a Git repository
+  #  # See https://www.jhipster.tech/jhipster-registry/#spring-cloud-config
+  #  environment:
+  #    - JHIPSTER_SLEEP=20
+  #    - _JAVA_OPTIONS=-Xmx512m -Xms256m
+  #    - SPRING_PROFILES_ACTIVE=dev,api-docs,oauth2
+  #    - SPRING_SECURITY_USER_PASSWORD=admin
+  #    - JHIPSTER_REGISTRY_PASSWORD=admin
+  #    - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+  #    - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/localhost-config/
+  #    # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=git
+  #    # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_URI=https://github.com/jhipster/jhipster-registry/
+  #    # - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_PATHS=central-config
+  #    # For keycloak to work, you need to add '127.0.0.1 keycloak' to your hosts file
+  #    - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
+  #    - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=jhipster-registry
+  #    - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=jhipster-registry
+  #  # If you want to expose these ports outside your dev PC,
+  #  # remove the "127.0.0.1:" prefix
+  #  ports:
+  #    - 127.0.0.1:8761:8761
+  elk:
+    image: sebp/elk:7.10.0
+    container_name: elk
+    restart: always
+    ports:
+      - 5601:5601
+      - 9200:9200
+      - 5044:5044

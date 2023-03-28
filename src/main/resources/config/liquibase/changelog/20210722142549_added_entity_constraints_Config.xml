@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity Config.
+    -->
+    <changeSet id="20210722142549-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="acquisition_id"
+                                 baseTableName="config"
+                                 constraintName="fk_config__acquisition_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="acquisition"/>
+    </changeSet>
+</databaseChangeLog>

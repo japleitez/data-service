@@ -1,0 +1,7 @@
+{
+  "class": "eu.europa.ec.eurostat.wihp.filters.parse.WIHPParseFilters",
+  "name": "WihpParseFilters",
+  "params": {
+    "document": "WihpParseFilter.json"
+  }
+}

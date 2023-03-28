@@ -1,0 +1,19 @@
+{
+  "sourceList": [
+    {
+      "name": "Arhs group",
+      "url": "https://www.arhs-groups.com",
+      "errors": [
+        "The name has illegal character",
+        "The url is not valid"
+      ]
+    },
+    {
+      "name": "Google",
+      "url": "https://www.google.com",
+      "errors": [
+        "The url is not valid"
+      ]
+    }
+  ]
+}

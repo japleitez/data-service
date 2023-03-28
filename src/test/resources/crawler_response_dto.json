@@ -1,0 +1,31 @@
+{
+  "fieldErrors": [
+    {
+      "objectName": "crawler",
+      "field": "name",
+      "message": "must match \"^(?=.*[a-zA-Z\\d].*)[a-zA-Z\\d _.]{1,}$\""
+    },
+    {
+      "objectName": "crawler",
+      "field": "fetchInterval",
+      "message": "must be greater than or equal to -1"
+    }
+  ],
+  "sourceErrors": [
+    {
+      "name": "Arhs group",
+      "url": "https://www.arhs-groups.com",
+      "errors": [
+        "The name has illegal character",
+        "The url is not valid"
+      ]
+    },
+    {
+      "name": "Google",
+      "url": "https://www.google.com",
+      "errors": [
+        "The url is not valid"
+      ]
+    }
+  ]
+}

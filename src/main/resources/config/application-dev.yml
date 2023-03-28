@@ -1,0 +1,143 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: DEBUG
+    tech.jhipster: DEBUG
+    org.hibernate.SQL: DEBUG
+    eu.europa.ec.eurostat.wihp: DEBUG
+
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+#
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-exclude: static/**
+    livereload:
+      enabled: false # we use Webpack dev server + BrowserSync for livereload
+  jackson:
+    serialization:
+      indent-output: true
+  #cloud:
+  #  config:
+  #    uri: http://admin:${jhipster.registry.password}@localhost:8761/config
+  #    # name of the config server's property source (file.yml) that we want to use
+  #    name: dataAcquisitionService
+  #    profile: dev
+  #    label: main # toggle to switch to a different version of the configuration as stored in git
+  #    # it can be set to any label, branch or commit of the configuration source Git repository
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/dataAcquisitionService
+    username: dataAcquisitionService
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
+  liquibase:
+    # Remove 'faker' if you do not want the sample data to be loaded automatically
+    contexts: dev, faker
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
+  sleuth:
+    # https://github.com/spring-projects/spring-framework/issues/27844#issuescomment-1002866885
+    # https://github.com/spring-cloud/spring-cloud-sleuth/issues/2094
+    async:
+      enabled: false
+    enabled: false
+    sampler:
+      probability: 1 # report 100% of traces
+  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+    base-url: http://localhost:9411
+    enabled: false
+    locator:
+      discovery:
+        enabled: true
+  elasticsearch:
+    uris: 'http://host.docker.internal:9200'
+  task:
+    execution:
+      thread-name-prefix: data-acquisition-service-task-
+      pool:
+        core-size: 8
+        max-size: 50
+        queue-capacity: 500
+
+server:
+  port: 8081
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+jhipster:
+  registry:
+    password: admin
+  # CORS is disabled by default on microservices, as you should access them through a gateway.
+  # If you want to enable it, please uncomment the configuration below.
+  cors:
+    allowed-origins: 'http://host.docker.internal:4200'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count'
+    allow-credentials: true
+    max-age: 1800
+  logging:
+    use-json-format: false # By default, logs are not in Json format
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: localhost
+      port: 5000
+      queue-size: 512
+  security:
+    oauth2:
+      audience:
+        - account
+        - api://default
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+application:
+  nimbus-seeds:
+    - host.docker.internal
+  topology-path: C:\Users\sinapiev\workspace\data-collection\topologies\basic-topology\target\basic-topology-1.0-SNAPSHOT.jar
+  kill-topology-wait-time: 60
+  topology-report-address: host.docker.internal:8081/api/acquisitions/:id/report
+  selenium-address: http://host.docker.internal:4444
+  oauth2-groups:
+    - WIHP
+    - eu-central-1_ul2IGtNhv_EULogin
+  oauth2-scopes:
+    - https://mr.wihp.ecdp.tech.ec.europa.eu/api/das:full
+  playground-service-address: http://localhost:8082/

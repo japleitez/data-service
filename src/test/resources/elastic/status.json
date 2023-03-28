@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 0,
+      "refresh_interval": "5s"
+    }
+  },
+  " ": {
+    "dynamic_templates": [
+      {
+        "metadata": {
+          "path_match": "metadata.*",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "keyword"
+          }
+        }
+      }
+    ],
+    "_source": {
+      "enabled": true
+    },
+    "properties": {
+      "key": {
+        "type": "keyword",
+        "index": true
+      },
+      "nextFetchDate": {
+        "type": "date",
+        "format": "date_optional_time"
+      },
+      "status": {
+        "type": "keyword"
+      },
+      "url": {
+        "type": "keyword"
+      }
+    }
+  }
+}

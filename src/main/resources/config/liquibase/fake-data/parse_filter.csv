@@ -1,0 +1,2 @@
+id;filter_id;configuration;crawler_id
+1;eu.europa.ec.eurostat.wihp.MyFilter6;"{""param1"": ""s"",""param2"": [1, 2, 3, 4 ],""param3"": {""param_object_1"": ""d"",""param_object_2"": 3,""param_object_3"": {""param_object_31"": ""ss""}},""paramArrayObj4"": [{""param_object_41"": ""d"",""param_object_42"": 4,""param_object_43"": {""param_object_431"": ""dd""}},{""param_object_41"": ""e"",""param_object_42"": 5,""param_object_43"": {""param_object_431"": ""rt""}}]}";4

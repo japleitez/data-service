@@ -1,0 +1,101 @@
+{
+  "name": "Crawler",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength", "pattern", "unique"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesPattern": "^[A-Z][a-z][0-9][ _.]+$"
+    },
+    {
+      "fieldName": "fetchInterval",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "-1",
+      "fieldValidateRulesMax": "525600"
+    },
+    {
+      "fieldName": "fetchIntervalWhenError",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "-1",
+      "fieldValidateRulesMax": "525600"
+    },
+    {
+      "fieldName": "fetchIntervalWhenFetchError",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "-1",
+      "fieldValidateRulesMax": "525600"
+    },
+    {
+      "fieldName": "extractorNoText",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "extractorTextIncludePattern",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "extractorTextExcludeTags",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "httpContentLimit",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "-1",
+      "fieldValidateRulesMax": "2147483647"
+    },
+    {
+      "fieldName": "emitOutLinks",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "maxEmitOutLinksPerPage",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "-1",
+      "fieldValidateRulesMax": "2147483647"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "parserFilter",
+      "otherEntityRelationshipName": "crawler",
+      "relationshipName": "parserFilter"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "acquisition",
+      "otherEntityRelationshipName": "crawler",
+      "relationshipName": "acquisition"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "source",
+      "otherEntityRelationshipName": "crawler",
+      "relationshipValidateRules": "required",
+      "relationshipName": "source",
+      "ownerSide": true
+    }
+  ],
+  "entityTableName": "crawler",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210614092855"
+}

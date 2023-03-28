@@ -1,0 +1,2 @@
+id;filter_id;configuration;crawler_id
+1;eu.europa.ec.eurostat.wihp.urlfilters.stormcrawler.BasicUrlFilter;"{""maxPathRepetition"": 1,""maxLength"": 512}";3

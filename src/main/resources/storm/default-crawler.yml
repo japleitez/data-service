@@ -1,0 +1,564 @@
+name: 'crawler'
+# Custom configuration for StormCrawler
+# This is used to override the default values from crawler-default.xml and provide additional ones
+# for your custom components.
+# Use this file with the parameter -conf when launching your extension of ConfigurableTopology.
+# This file does not contain all the key values but only the most frequently used ones. See crawler-default.xml for an extensive list.
+
+config:
+  nimbus.seeds: []
+  topology.workers: 1
+  topology.message.timeout.secs: 300
+  topology.max.spout.pending: 100
+  topology.debug: false
+  topology.status.report.address: ''
+
+  fetcher.threads.number: 50
+
+  # override the JVM parameters for the workers
+  topology.worker.childopts: '-Xmx2g -Djava.net.preferIPv4Stack=true'
+
+  # mandatory when using Flux
+  topology.kryo.register:
+    - com.digitalpebble.stormcrawler.Metadata
+
+  # metadata to transfer to the outlinks
+  # used by Fetcher for redirections, sitemapparser, etc...
+  # these are also persisted for the parent document (see below)
+  # metadata.transfer:
+  # - customMetadataName
+
+  # lists the metadata to persist to storage
+  # these are not transfered to the outlinks
+  metadata.persist:
+    - _redirTo
+    - error.cause
+    - error.source
+    - isSitemap
+    - isFeed
+
+  http.agent.name: 'Web Intelligence Hub'
+  http.agent.version: '0.1'
+  http.agent.description: 'The WIH is run by Eurostat, the official statistics office of the European Union. All the data retrieved by the WIH is strictly used only for statistical purposes, in accordance with Regulation (EC) No 223/2009 of the European Parliament and of the Council on European statistics.'
+  http.agent.url: 'https://ec.europa.eu/eurostat/'
+  http.agent.email: 'ESTAT-WIH@ec.europa.eu'
+
+  http.protocol.implementation: 'com.digitalpebble.stormcrawler.protocol.okhttp.HttpProtocol'
+  https.protocol.implementation: 'com.digitalpebble.stormcrawler.protocol.okhttp.HttpProtocol'
+
+  # The maximum number of bytes for returned HTTP response bodies.
+  # The fetched page will be trimmed to 65KB in this case
+  # Set -1 to disable the limit.
+  http.content.limit: -1
+
+  # FetcherBolt queue dump => comment out to activate
+  # if a file exists on the worker machine with the corresponding port number
+  # the FetcherBolt will log the content of its internal queues to the logs
+  # fetcherbolt.queue.debug.filepath: "/tmp/fetcher-dump-{port}"
+
+  # TODO
+  parsefilters.config.file: 'parsefilters.json'
+  urlfilters.config.file: 'urlfilters.json'
+  wihpurlfilters.config.file: 'WihpUrlFilter.json'
+  wihpparsefilters.config.file: 'WihpParseFilter.json'
+
+  # revisit a page daily (value in minutes)
+  # set it to -1 to never refetch a page
+  fetchInterval.default: 1440
+
+  # revisit a page with a fetch error after 2 hours (value in minutes)
+  # set it to -1 to never refetch a page
+  fetchInterval.fetch.error: 120
+
+  # never revisit a page with an error (or set a value in minutes)
+  fetchInterval.error: -1
+
+  # set to true if you don't need any text to be extracted by JSoup
+  textextractor.no.text: false
+
+  # text extraction for JSoupParserBolt
+  textextractor.include.pattern:
+
+  textextractor.exclude.tags:
+    - STYLE
+    - SCRIPT
+
+  # needed for parsing with Tika
+  jsoup.treat.non.html.as.error: false
+
+  # restrics the documents types to be parsed with Tika
+  parser.mimetype.whitelist:
+    - application/.+word.*
+    - application/.+excel.*
+    - application/.+powerpoint.*
+    - application/.*pdf.*
+
+  # custom fetch interval to be used when a document has the key/value in its metadata
+  # and has been fetched successfully (value in minutes)
+  # fetchInterval.FETCH_ERROR.isFeed=true: 30
+  # fetchInterval.isFeed=true: 10
+
+  # configuration for the classes extending AbstractIndexerBolt
+  # indexer.md.filter: "someKey=aValue"
+  indexer.url.fieldname: 'fetched_url'
+  indexer.text.fieldname: 'content'
+  indexer.canonical.name: 'canonical'
+  indexer.keep.all.metadata: true
+  indexer.md.mapping:
+    - parse.title=title
+    - parse.keywords=keywords
+    - parse.description=description
+    - domain
+    - format
+
+  ###########################################################################################
+  ###########################################################################################
+  ##                                       ES_CONFIG                                       ##
+  ###########################################################################################
+  ###########################################################################################
+
+  es.config.user: ''
+  es.config.password: ''
+  es.config.addresses: ''
+  es.config.index.name: ''
+  es.config.doc.type: 'config'
+  es.config.bulkActions: 10
+  es.config.flushInterval: '5s'
+  es.config.concurrentRequests: 1
+  # ES indexer bolt
+  # adresses can be specified as a full URL
+  # if not we assume that the protocol is http and the port 9200
+  es.indexer.addresses: ''
+  es.indexer.index.name: ''
+  # es.indexer.pipeline: "_PIPELINE_"
+  es.indexer.create: false
+  es.indexer.bulkActions: 100
+  es.indexer.flushInterval: '10s'
+  es.indexer.concurrentRequests: 1
+  es.indexer.user: ''
+  es.indexer.password: ''
+
+  # ES metricsConsumer
+  es.metrics.addresses: ''
+  es.metrics.index.name: ''
+  es.metrics.user: ''
+  es.metrics.password: ''
+  es.metrics.bulkActions: 50
+  es.metrics.flushInterval: '5s'
+  es.metrics.concurrentRequests: 1
+
+  # ES spout and persistence bolt
+  es.status.addresses: ''
+  es.status.index.name: ''
+  es.status.user: ''
+  es.status.password: ''
+  # the routing is done on the value of 'partition.url.mode'
+  es.status.routing: true
+  # stores the value used for grouping the URLs as a separate field
+  # needed by the spout implementations
+  # also used for routing if the value above is set to true
+  es.status.routing.fieldname: 'key'
+  es.status.bulkActions: 200
+  es.status.flushInterval: '5s'
+  es.status.concurrentRequests: 1
+
+  # spout config #
+
+  # positive or negative filters parsable by the Lucene Query Parser
+  # es.status.filterQuery:
+  #  - "-(key:stormcrawler.net)"
+  #  - "-(key:digitalpebble.com)"
+
+  # time in secs for which the URLs will be considered for fetching after a ack of fail
+  spout.ttl.purgatory: 30
+
+  # Min time (in msecs) to allow between 2 successive queries to ES
+  spout.min.delay.queries: 2000
+
+  # Delay since previous query date (in secs) after which the nextFetchDate value will be reset to the current time
+  # Setting this to -1 or a large value means that the ES will cache the results but also that less and less results
+  # might be returned.
+  spout.reset.fetchdate.after: 120
+
+  es.status.max.buckets: 50
+  es.status.max.urls.per.bucket: 2
+  # field to group the URLs into buckets
+  es.status.bucket.field: 'key'
+  # fields to sort the URLs within a bucket
+  es.status.bucket.sort.field:
+    - 'nextFetchDate'
+    - 'url'
+  # field to sort the buckets
+  es.status.global.sort.field: 'nextFetchDate'
+
+  # CollapsingSpout : limits the deep paging by resetting the start offset for the ES query
+  es.status.max.start.offset: 500
+
+  # AggregationSpout : sampling improves the performance on large crawls
+  es.status.sample: false
+
+  # max allowed duration of a query in sec
+  es.status.query.timeout: -1
+
+  # AggregationSpout (expert): adds this value in mins to the latest date returned in the results and
+  # use it as nextFetchDate
+  es.status.recentDate.increase: -1
+  es.status.recentDate.min.gap: -1
+
+  topology.metrics.consumer.register:
+    - class: 'com.digitalpebble.stormcrawler.elasticsearch.metrics.MetricsConsumer'
+      parallelism.hint: 1
+      #whitelist:
+      #  - "fetcher_counter"
+      #  - "fetcher_average.bytes_fetched"
+      #blacklist:
+      #  - "__receive.*"
+  ###########################################################################################
+  ###########################################################################################
+  ##                                       DEFAULT                                         ##
+  ###########################################################################################
+  ###########################################################################################
+  # Default configuration for StormCrawler
+  # This is used to make the default values explicit and list the most common configurations.
+  # Do not modify this file but instead provide a custom one with the parameter -conf
+  # when launching your extension of ConfigurableTopology.
+  fetcher.server.delay: 1.0
+  # min. delay for multi-threaded queues
+  fetcher.server.min.delay: 0.0
+  fetcher.queue.mode: 'byHost'
+  fetcher.threads.per.queue: 1
+  #fetcher.threads.number: 10
+  fetcher.max.urls.in.queues: -1
+  fetcher.max.queue.size: -1
+  fetcher.timeout.queue: -1
+  # max. crawl-delay accepted in robots.txt (in seconds)
+  fetcher.max.crawl.delay: 30
+  # behavior of fetcher when the crawl-delay in the robots.txt
+  # is larger than fetcher.max.crawl.delay:
+  #  (if false)
+  #    skip URLs from this queue to avoid that any overlong
+  #    crawl-delay throttles the crawler
+  #  (if true)
+  #    set the delay to fetcher.max.crawl.delay,
+  #    making fetcher more aggressive than requested
+  fetcher.max.crawl.delay.force: false
+  # behavior of fetcher when the crawl-delay in the robots.txt
+  # is smaller (ev. less than one second) than the default delay:
+  #  (if true)
+  #    use the larger default delay (fetcher.server.delay)
+  #    and ignore the shorter crawl-delay in the robots.txt
+  #  (if false)
+  #    use the delay specified in the robots.txt
+  fetcher.server.delay.force: false
+
+  # time bucket to use for the metrics sent by the Fetcher
+  fetcher.metrics.time.bucket.secs: 10
+
+  # SimpleFetcherBolt: if the delay required by the politeness
+  # is above this value, the tuple is sent back to the Storm queue
+  # for the bolt on the _throttle_ stream (in msec)
+  fetcher.max.throttle.sleep: -1
+
+  # alternative values are "byIP" and "byDomain"
+  partition.url.mode: 'byDomain'
+
+  urlbuffer.class: 'com.digitalpebble.stormcrawler.persistence.urlbuffer.SimpleURLBuffer'
+
+  # metadata to transfer to the outlinks
+  # used by Fetcher for redirections, sitemapparser,
+  # passing cookies to child pages, etc.
+  # These are also persisted for the parent document (see below)
+  # metadata.transfer:
+  # - customMetadataName
+
+  metadata.track.path: true
+  metadata.track.depth: true
+
+  http.accept.language: 'en-us,en-gb,en;q=0.7,*;q=0.3'
+  http.accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+
+  http.store.headers: false
+  http.timeout: 10000
+
+  # store partial fetches as trimmed content (some content has been fetched,
+  # but reading more data from socket failed, eg. because of a network timeout)
+  http.content.partial.as.trimmed: false
+
+  # for crawling through a proxy:
+  # http.proxy.host:
+  # http.proxy.port:
+  # okhttp only, defaults to "HTTP"
+  # http.proxy.type: "SOCKS"
+  # for crawling through a proxy with Basic authentication:
+  # http.proxy.user:
+  # http.proxy.pass:
+
+  http.robots.403.allow: true
+
+  # ignore directives from robots.txt files?
+  http.robots.file.skip: false
+
+  # ignore robots directives from the http headers?
+  http.robots.headers.skip: false
+
+  # ignore robots directives from the html meta?
+  http.robots.meta.skip: false
+
+  # should the URLs be removed when a page is marked as noFollow
+  robots.noFollow.strict: false
+
+  # Guava caches used for the robots.txt directives
+  robots.cache.spec: 'maximumSize=10000,expireAfterWrite=6h'
+  robots.error.cache.spec: 'maximumSize=10000,expireAfterWrite=1h'
+
+  protocols: 'http,https,file'
+  file.protocol.implementation: 'com.digitalpebble.stormcrawler.protocol.file.FileProtocol'
+
+  # the http/https protocol versions to use, in order of preference
+  # Details of the protocol negotiation between the client and
+  # the crawled server depend on the chosen protocol implementation.
+  # If no protocol versions are listed the protocol implementation
+  # will use its defaults.
+  http.protocol.versions:
+  # HTTP/2 over TLS (protocol negotiation via ALPN)
+  #- "h2"
+  # HTTP/1.1
+  #- "http/1.1"
+  # HTTP/1.0
+  #- "http/1.0"
+  # HTTP/2 over TCP
+  ##- "h2c"
+
+  # key values obtained by the protocol can be prefixed
+  # to avoid accidental overwrites. Note that persisted
+  # or transferred protocol metadata must also be prefixed.
+  protocol.md.prefix: 'protocol.'
+
+  # navigationfilters.config.file: "navigationfilters.json"
+  selenium.addresses: ''
+  selenium.implicitlyWait: 30000
+  selenium.pageLoadTimeout: 30000
+  selenium.setScriptTimeout: 30000
+  selenium.instances.num: 1
+  selenium.capabilities:
+    browserName: 'chrome'
+    headless: 'true'
+    goog:chromeOptions:
+      args:
+        - '--headless'
+        - '--lang=en'
+        - '--mute-audio'
+        - '--start-maximized'
+        - '--window-size=1080,1920'
+        - '--disable-popup-blocking'
+        - '--disable-audio-output'
+        - '--disable-dev-shm-usage'
+        - '--user-agent=Web Intelligence Hub 0.1 The WIH is run by Eurostat, the official statistics office of the European Union. All the data retrieved by the WIH is strictly used only for statistical purposes, in accordance with Regulation (EC) No 223/2009 of the European Parliament and of the Council on European statistics. https://ec.europa.eu/eurostat/ ESTAT-WIH@ec.europa.eu'
+      prefs:
+        profile.managed_default_content_settings.notifications: 2
+        profile.managed_default_content_settings.images: 1
+        profile.managed_default_content_settings.media_stream: 2
+        profile.managed_default_content_settings.cookies: 2
+        profile.managed_default_content_settings.plugins: 2
+        profile.managed_default_content_settings.geolocation: 2
+
+  # DelegatorRemoteDriverProtocol
+  selenium.delegated.protocol: 'com.digitalpebble.stormcrawler.protocol.httpclient.HttpProtocol'
+
+  # no url or parsefilters by default
+  # parsefilters.config.file: "parsefilters.json"
+  # urlfilters.config.file: "urlfilters.json"
+
+  # JSoupParserBolt
+  parser.emitOutlinks: true
+  parser.emitOutlinks.max.per.page: -1
+  track.anchors: true
+  detect.mimetype: true
+  detect.charset.maxlength: 10000
+
+  # filters URLs in sitemaps based on their modified Date (if any)
+  sitemap.filter.hours.since.modified: -1
+
+  # staggered scheduling of sitemaps
+  sitemap.schedule.delay: -1
+
+  # whether to add any sitemaps found in the robots.txt to the status stream
+  # used by fetcher bolts
+  sitemap.discovery: true
+
+  # determines what sitemap extensions to parse from the sitemap and add
+  # to an outlinks metadata object
+  sitemap.extensions:
+  # Illustrates enabling sitemap extension parsing
+  # there are 5 supported types "IMAGE", "LINKS", "MOBILE", "NEWS", and "VIDEO"
+  # sitemap.extensions:
+  #   - IMAGE
+  #   - LINKS
+  #   - MOBILE
+  #   - NEWS
+  #   - VIDEO
+
+  # Default implementation of Scheduler
+  scheduler.class: 'com.digitalpebble.stormcrawler.persistence.DefaultScheduler'
+
+  # revisit a page daily (value in minutes)
+  # set it to -1 to never refetch a page
+
+  # revisit a page with a fetch error after 2 hours (value in minutes)
+  # set it to -1 to never refetch a page
+
+  # never revisit a page with an error (or set a value in minutes)
+
+  # custom fetch interval to be used when a document has the key/value in its metadata
+  # and has been fetched succesfully (value in minutes)
+  # fetchInterval.FETCH_ERROR.isFeed=true
+  # fetchInterval.isFeed=true: 10
+
+  # max number of successive fetch errors before changing status to ERROR
+  max.fetch.errors: 3
+
+  # Guava cache use by AbstractStatusUpdaterBolt for DISCOVERED URLs
+  status.updater.use.cache: true
+  status.updater.cache.spec: 'maximumSize=10000,expireAfterAccess=1h'
+
+  # Can also take "MINUTE" or "HOUR"
+  status.updater.unit.round.date: 'SECOND'
+
+  # configuration for the classes extending AbstractIndexerBolt
+  # indexer.md.filter: "someKey=aValue"
+  indexer.text.maxlength: -1
+
+###########################################################################################
+###########################################################################################
+##                                       FLUX                                            ##
+###########################################################################################
+###########################################################################################
+
+spouts:
+  - id: 'spout'
+    className: 'com.digitalpebble.stormcrawler.elasticsearch.persistence.AggregationSpout'
+    parallelism: 1
+  - id: 'report'
+    className: 'eu.europa.ec.eurostat.wihp.report.DataAcquisitionReport'
+    parallelism: 1
+
+bolts:
+  - id: 'partitioner'
+    className: 'com.digitalpebble.stormcrawler.bolt.URLPartitionerBolt'
+    parallelism: 1
+  - id: 'fetcher'
+    className: 'eu.europa.ec.eurostat.wihp.bolt.EsFetcherBolt'
+    parallelism: 1
+  - id: 'sitemap'
+    className: 'eu.europa.ec.eurostat.wihp.bolt.EsSiteMapParserBolt'
+    parallelism: 1
+  - id: 'parse'
+    className: 'eu.europa.ec.eurostat.wihp.bolt.EsJSoupParserBolt'
+    parallelism: 1
+  - id: 'shunt'
+    className: 'com.digitalpebble.stormcrawler.tika.RedirectionBolt'
+    parallelism: 1
+  - id: 'tika'
+    className: 'eu.europa.ec.eurostat.wihp.bolt.EsParserBolt'
+    parallelism: 1
+  - id: 'index'
+    className: 'eu.europa.ec.eurostat.wihp.bolt.EsIndexerBolt'
+    parallelism: 1
+  - id: 'status'
+    className: 'com.digitalpebble.stormcrawler.elasticsearch.persistence.StatusUpdaterBolt'
+    parallelism: 1
+  - id: 'deleter'
+    className: 'com.digitalpebble.stormcrawler.elasticsearch.bolt.DeletionBolt'
+    parallelism: 1
+  - id: 'status_metrics'
+    className: 'com.digitalpebble.stormcrawler.elasticsearch.metrics.StatusMetricsBolt'
+    parallelism: 1
+
+streams:
+  - from: 'spout'
+    to: 'partitioner'
+    grouping:
+      type: SHUFFLE
+
+  - from: 'spout'
+    to: 'status_metrics'
+    grouping:
+      type: SHUFFLE
+
+  - from: 'partitioner'
+    to: 'fetcher'
+    grouping:
+      type: FIELDS
+      args: ['key']
+
+  - from: 'fetcher'
+    to: 'sitemap'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+
+  - from: 'sitemap'
+    to: 'parse'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+
+  - from: 'parse'
+    to: 'shunt'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+
+  - from: 'shunt'
+    to: 'tika'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+      streamId: 'tika'
+
+  - from: 'tika'
+    to: 'index'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+
+  - from: 'shunt'
+    to: 'index'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+
+  - from: 'fetcher'
+    to: 'status'
+    grouping:
+      type: FIELDS
+      args: ['url']
+      streamId: 'status'
+
+  - from: 'parse'
+    to: 'status'
+    grouping:
+      type: FIELDS
+      args: ['url']
+      streamId: 'status'
+
+  - from: 'sitemap'
+    to: 'status'
+    grouping:
+      type: FIELDS
+      args: ['url']
+      streamId: 'status'
+
+  - from: 'tika'
+    to: 'status'
+    grouping:
+      type: FIELDS
+      args: ['url']
+      streamId: 'status'
+
+  - from: 'index'
+    to: 'status'
+    grouping:
+      type: FIELDS
+      args: ['url']
+      streamId: 'status'
+
+  - from: 'status'
+    to: 'deleter'
+    grouping:
+      type: LOCAL_OR_SHUFFLE
+      streamId: 'deletion'

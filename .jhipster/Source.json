@@ -1,0 +1,41 @@
+{
+  "name": "Source",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength", "pattern", "unique"],
+      "fieldValidateRulesMinlength": "1",
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesPattern": "^[A-Z][a-z][0-9][ _.]+$"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "1"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "crawler",
+      "otherEntityRelationshipName": "source",
+      "relationshipName": "crawler",
+      "ownerSide": false
+    }
+  ],
+  "entityTableName": "source",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "microserviceName": "dataAcquisitionService",
+  "clientRootFolder": "dataAcquisitionService",
+  "databaseType": "sql",
+  "changelogDate": "20210608135526"
+}
